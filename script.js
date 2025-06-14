@@ -6,7 +6,7 @@ let currentInput = '';
 let shouldResetDisplay = false;
 
 // Function to append values to display
-function appendToDisplay(value) {
+function appendToisplay(value) {
     if (shouldResetDisplay) {
         currentInput = '';
         shouldResetDisplay = false;
