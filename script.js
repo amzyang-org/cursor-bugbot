@@ -1,5 +1,5 @@
 // Get display element
-const display = document.getElementById('display');
+const display = document.getElementById('isplay');
 
 // Initialize display
 let currentInput = '';
@@ -11,12 +11,12 @@ function appendToDisplay(value) {
         currentInput = '';
         shouldResetDisplay = false;
     }
-    
+
     // Prevent multiple operators in a row
     if (isOperator(value) && isOperator(currentInput.slice(-1))) {
         return;
     }
-    
+
     // Prevent multiple decimal points
     if (value === '.' && currentInput.includes('.')) {
         // Check if there's an operator after the last decimal point
@@ -27,12 +27,12 @@ function appendToDisplay(value) {
             currentInput.lastIndexOf('/')
         );
         const lastDecimalIndex = currentInput.lastIndexOf('.');
-        
+
         if (lastDecimalIndex > lastOperatorIndex) {
             return;
         }
     }
-    
+
     currentInput += value;
     display.value = currentInput;
 }
@@ -53,35 +53,35 @@ function deleteLast() {
 function calculateResult() {
     try {
         if (currentInput === '') return;
-        
+
         // Replace × with * for calculation
         let expression = currentInput.replace(/×/g, '*');
-        
+
         // Validate expression (basic security check)
         if (!isValidExpression(expression)) {
             throw new Error('Invalid expression');
         }
-        
+
         // Calculate result
         let result = eval(expression);
-        
+
         // Handle division by zero and other edge cases
         if (!isFinite(result)) {
             throw new Error('Cannot divide by zero');
         }
-        
+
         // Format result (remove unnecessary decimals)
         result = parseFloat(result.toFixed(10));
-        
+
         display.value = result;
         currentInput = result.toString();
         shouldResetDisplay = true;
-        
+
     } catch (error) {
         display.value = 'Error';
         currentInput = '';
         shouldResetDisplay = true;
-        
+
         // Clear error after 2 seconds
         setTimeout(() => {
             if (display.value === 'Error') {
@@ -106,7 +106,7 @@ function isValidExpression(expression) {
 // Keyboard support
 document.addEventListener('keydown', function(event) {
     const key = event.key;
-    
+
     // Numbers and operators
     if ('0123456789+-*/'.includes(key)) {
         event.preventDefault();
@@ -116,25 +116,25 @@ document.addEventListener('keydown', function(event) {
             appendToDisplay(key);
         }
     }
-    
+
     // Decimal point
     if (key === '.') {
         event.preventDefault();
         appendToDisplay('.');
     }
-    
+
     // Enter or equals
     if (key === 'Enter' || key === '=') {
         event.preventDefault();
         calculateResult();
     }
-    
+
     // Escape or clear
     if (key === 'Escape' || key.toLowerCase() === 'c') {
         event.preventDefault();
         clearDisplay();
     }
-    
+
     // Backspace
     if (key === 'Backspace') {
         event.preventDefault();
